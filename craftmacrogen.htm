@@ -1,0 +1,179 @@
+<html>
+
+<meta charset="UTF-8">
+
+<head>
+<title>SMOL'S CRAFTER MACRO GENERATOR</title>
+
+<style>
+* {
+font-family: sans-serif;
+}
+
+p {
+margin: 5px;
+}
+
+.container {
+padding: 10px;
+margin: 5px;
+border: 1px solid #cccccc;
+border-radius: 5px;
+width: 500px;
+float: left;
+font-size: 14px;
+}
+
+.icon {
+height: 40px;
+width: 40px;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.iMacro {
+}
+
+.skillName {
+align: center;
+background: #ccc;
+padding: 10px;
+margin: 5px;
+visibility: hidden;
+}
+
+textarea {
+font-family: monospace;
+width: 100%;
+resize: none;
+}
+
+
+</style>
+
+<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+<h1>SMOL'S CRAFTER MACRO GENERATOR</h1>
+<p>Under Construction but partially useable.</p>
+
+<div class="container">
+<p><b>Buffs</b></p>
+<img class="icon buff" src="./icons/final_appraisal.png" alt="Final Appraisal">
+<img class="icon buff" src="./icons/manipulation.png" alt="Manipulation">
+<img class="icon buff" src="./icons/waste_not.png" alt="Waste Not">
+<img class="icon buff" src="./icons/waste_not_2.png" alt="Waste Not II">
+<img class="icon buff" src="./icons/innovation.png" alt="Innovation">
+<img class="icon buff" src="./icons/great_strides.png" alt="Great Strides">
+<img class="icon buff" src="./icons/veneration.png" alt="Veneration">
+
+<p><b>Quality/Collectibility</b></p>
+<img class="icon" src="./icons/reflect.png" alt="Reflect">
+<img class="icon" src="./icons/byregots_blessing.png" alt="Byregot's Blessing">
+<img class="icon" src="./icons/preparatory_touch.png" alt="Preparatory Touch">
+<img class="icon" src="./icons/precise_touch.png" alt="Precise Touch">
+<img class="icon" src="./icons/prudent_touch.png" alt="Prudent Touch">
+<img class="icon" src="./icons/basic_touch.png" alt="Basic Touch">
+<img class="icon" src="./icons/standard_touch.png" alt="Standard Touch">
+<img class="icon" src="./icons/advanced_touch.png" alt="Advanced Touch">
+<img class="icon" src="./icons/hasty_touch.png" alt="Hasty Touch">
+<img class="icon" src="./icons/focused_touch.png" alt="Focused Touch">
+<br>
+<img class="icon" src="./icons/trained_eye.png" alt="Trained Eye">
+<img class="icon" src="./icons/trained_finesse.png" alt="Trained Finesse">
+
+<p><b>Progress</b></p>
+<img class="icon" src="./icons/muscle_memory.png" alt="Muscle Memory">
+<img class="icon" src="./icons/groundwork.png" alt="Groundwork">
+<img class="icon" src="./icons/rapid_synthesis.png" alt="Rapid Synthesis">
+<img class="icon" src="./icons/careful_synthesis.png" alt="Careful Synthesis">
+<img class="icon" src="./icons/intensive_synthesis.png" alt="Intensive Synthesis">
+<img class="icon" src="./icons/basic_synthesis.png" alt="Basic Synthesis">
+<img class="icon" src="./icons/delicate_synthesis.png" alt="Delicate Synthesis">
+<img class="icon" src="./icons/focused_synthesis.png" alt="Focused Synthesis">
+<img class="icon" src="./icons/prudent_synthesis.png" alt="Prudent Synthesis">
+
+
+<p><b>Etc</b></p>
+<img class="icon" src="./icons/masters_mend.png" alt="Master's Mend">
+<img class="icon" src="./icons/observe.png" alt="Observe">
+<img class="icon" src="./icons/tricks_trade.png" alt="Tricks of the Trade">
+
+
+
+<!--
+<img class="icon" src="./icons/.png" alt="">
+-->
+
+<div id="skillBox" class="skillName">Skill name</div>
+</div>
+
+<div class="container">
+<p><b>Rotato</b></p>
+<div id="rotation" style="padding: 10px; min-height: 300px;">
+</div>
+<button id="clearMacro">CLEAR</button>
+</div>
+
+<div class="container">
+<p><b>Macro</b></p>
+<textarea readonly rows=20 id="macro"></textarea>
+
+
+</div>
+
+<script>
+$(document).ready(function() {
+	$("#macro").val("");
+});
+
+
+function genMacro() {
+	echo = "/e macro end <se.1>";
+	$("#macro").val("");
+	
+	$("#rotation > img.icon").each(function(){
+		$("#macro").val($("#macro").val() + "/ac \"" + $(this).attr("alt") + "\"");
+		
+		if ($(this).hasClass("buff")) {
+			$("#macro").val($("#macro").val() + " <wait.2>");
+		} else {
+			$("#macro").val($("#macro").val() + " <wait.3>");
+		}
+		
+		$("#macro").val($("#macro").val() + "\n");
+	});
+	
+	
+	$("#macro").val($("#macro").val() + echo);
+}
+
+$("#clearMacro").click(function(){
+	$("#rotation").empty();
+	$("#macro").val("");
+});
+
+$("img.icon").hover(function() {
+		$("#skillBox").css("visibility", "visible");
+		$("#skillBox").text($(this).attr('alt'));
+	},
+	
+	function() {
+		$("#skillBox").css("visibility", "hidden");
+		});
+	
+$("img.icon").click(function(){
+		$(this).clone().appendTo("#rotation");
+		$("#rotation").append(' ');
+		genMacro();
+	});
+
+$(document).on("click", "#rotation > img.icon" , function(){
+	$(this).remove();
+	genMacro();
+});
+
+</script>
+</body>
+</html>
