@@ -119,7 +119,7 @@ resize: none;
 <div class="container">
 <p><b>Macro</b></p>
 <textarea readonly rows=20 id="macro"></textarea>
-
+<button id="copyMacro">COPY</button>
 
 </div>
 
@@ -152,6 +152,11 @@ function genMacro() {
 $("#clearMacro").click(function(){
 	$("#rotation").empty();
 	$("#macro").val("");
+});
+
+$("#copyMacro").click(function(){
+	$("#macro").select();
+	document.execCommand("copy");
 });
 
 $("img.icon").hover(function() {
