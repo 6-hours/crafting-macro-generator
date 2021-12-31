@@ -48,6 +48,11 @@ width: 100%;
 resize: none;
 }
 
+button {
+margin: 10px;
+display: block;
+}
+
 
 </style>
 
@@ -116,9 +121,9 @@ resize: none;
 <button id="clearMacro">CLEAR</button>
 </div>
 
-<div class="container">
+<div class="container" id="macroContainer">
 <p><b>Macro</b></p>
-<textarea readonly rows=20 id="macro"></textarea>
+<textarea readonly rows=15 id="macro"></textarea>
 <button id="copyMacro">COPY</button>
 
 </div>
@@ -131,11 +136,23 @@ $(document).ready(function() {
 
 function genMacro() {
 	echo = "/e macro end <se.1>";
+	lines = 0;
+	$("#macro1").remove();
+	$("#copyMacro1").remove();
 	$("#macro").val("");
 	
 	$("#rotation > img.icon").each(function(){
-		$("#macro").val($("#macro").val() + "/ac \"" + $(this).attr("alt") + "\"");
+		if (lines == 14) {
+			$("#macro").val($("#macro").val() + echo);
+			$("#macro").attr("id", "macro1");
+			$("#copyMacro").attr("id", "copyMacro1");
+			$("#macroContainer").append("<textarea readonly rows=15 id=\"macro\"></textarea><button id=\"copyMacro\">COPY</button>");
+			$("#macro").val("");
+		} else {
+		};
 		
+		$("#macro").val($("#macro").val() + "/ac \"" + $(this).attr("alt") + "\"");
+			
 		if ($(this).hasClass("buff")) {
 			$("#macro").val($("#macro").val() + " <wait.2>");
 		} else {
@@ -143,20 +160,18 @@ function genMacro() {
 		}
 		
 		$("#macro").val($("#macro").val() + "\n");
+		
+		lines ++;
 	});
 	
 	
-	$("#macro").val($("#macro").val() + echo);
+	if (lines>0) {$("#macro").val($("#macro").val() + echo);};
 }
 
 $("#clearMacro").click(function(){
 	$("#rotation").empty();
+	genMacro();
 	$("#macro").val("");
-});
-
-$("#copyMacro").click(function(){
-	$("#macro").select();
-	document.execCommand("copy");
 });
 
 $("img.icon").hover(function() {
@@ -177,6 +192,16 @@ $("img.icon").click(function(){
 $(document).on("click", "#rotation > img.icon" , function(){
 	$(this).remove();
 	genMacro();
+});
+
+$(document).on("click", "#copyMacro" , function(){
+	$("#macro").select();
+	document.execCommand("copy");
+});
+
+$(document).on("click", "#copyMacro1" , function(){
+	$("#macro1").select();
+	document.execCommand("copy");
 });
 
 </script>
